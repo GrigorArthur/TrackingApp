@@ -1,4 +1,17 @@
 <resources>
-    <string name="app_name">TrackingApp</string>
+    <string name="app_name">Office Book</string>
     <string name="title_activity_maps">Tracking</string>
+    <string name="hint_user_name">User Name</string>
+    <string name="hint_customer_id">Customer ID</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="network_error">Network Error</string>
+
+    <array name="register_result">
+        <item>Success</item>
+        <item>Database Error</item>
+        <item>Incorrect UserName or Customer ID</item>
+        <item>Incorrect Password</item>
+        <item>Invalid Request</item>
+    </array>
 </resources>

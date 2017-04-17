@@ -29,8 +29,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            String message = remoteMessage.getNotification().getBody();
+            Log.d(TAG, "Message Notification Body: " + message);
+            showNotification(message);
         }
+    }
+
+    private void showNotification(String message) {
+        //optionally we can display the json into log
+        MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
+
+        //creating an intent for the notification
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+        mNotificationManager.showSmallNotification("Notification", message, intent);
     }
 
     //this method will display the notification
