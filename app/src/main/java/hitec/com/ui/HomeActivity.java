@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -124,5 +125,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void networkError() {
         ApplicationContext.showToastMessage(HomeActivity.this, getResources().getString(R.string.network_error));
+    }
+
+    public void sendNotification(String receiver) {
+        Toast.makeText(HomeActivity.this, "Notification Send", Toast.LENGTH_SHORT).show();
     }
 }

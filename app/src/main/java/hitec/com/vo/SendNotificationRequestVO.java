@@ -5,6 +5,7 @@ package hitec.com.vo;
  */
 
 public class SendNotificationRequestVO extends BaseRequestVO{
-    public String username;
+    public String sender;
+    public String receiver;
     public String message;
 }

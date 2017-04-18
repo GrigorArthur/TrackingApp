@@ -14,4 +14,8 @@ public class URLManager {
     public static String getUsersURL() {
         return ApplicationContext.HTTP_HOST + "/GetRelatedUsers.php";
     }
+
+    public static String getSendNotificationURL() {
+        return ApplicationContext.HTTP_HOST + "/sendSinglePush.php";
+    }
 }
