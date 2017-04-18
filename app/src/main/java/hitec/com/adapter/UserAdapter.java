@@ -1,6 +1,5 @@
 package hitec.com.adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -18,14 +15,17 @@ import butterknife.ButterKnife;
 import hitec.com.R;
 import hitec.com.model.UserItem;
 import hitec.com.ui.HomeActivity;
+import hitec.com.util.SharedPrefManager;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private HomeActivity parent;
+    private int usertype;
     private List<UserItem> items = new ArrayList<>();
 
     public UserAdapter(HomeActivity parent) {
         this.parent = parent;
+        this.usertype = SharedPrefManager.getInstance(parent).getUserType();
     }
 
     @Override
@@ -53,6 +53,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 parent.startActivity(intent);*/
             }
         });
+
+        if(usertype == 1) {
+            holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int position = (int)view.getTag();
+                    UserItem item = items.get(position);
+                    parent.sendNotification(item.getUsername());
+                    return false;
+                }
+            });
+        }
     }
 
     public UserItem getItem(int pos) {
