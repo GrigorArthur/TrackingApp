@@ -1,5 +1,6 @@
 package hitec.com.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 import hitec.com.R;
 import hitec.com.model.UserItem;
 import hitec.com.ui.HomeActivity;
+import hitec.com.ui.UserDetailActivity;
 import hitec.com.util.SharedPrefManager;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
@@ -47,10 +49,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             public void onClick(View view) {
                 int position = (int)view.getTag();
                 UserItem item = items.get(position);
-                Log.v("Selected User", item.getUsername());
-                /*Intent intent = new Intent(parent, BranchDetailActivity.class);
-                intent.putExtra("item", item);
-                parent.startActivity(intent);*/
+                Intent intent = new Intent(parent, UserDetailActivity.class);
+                intent.putExtra("username", item.getUsername());
+                parent.startActivity(intent);
             }
         });
 

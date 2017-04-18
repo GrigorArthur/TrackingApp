@@ -1,6 +1,8 @@
 package hitec.com.notification;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -20,19 +22,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-            try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                sendPushNotification(json);
-            } catch (Exception e) {
-                Log.e(TAG, "Exception: " + e.getMessage());
-            }
+            Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            v.vibrate(500);
         }
 
-        if (remoteMessage.getNotification() != null) {
+        /*if (remoteMessage.getNotification() != null) {
             String message = remoteMessage.getNotification().getBody();
             Log.d(TAG, "Message Notification Body: " + message);
             showNotification(message);
-        }
+        }*/
     }
 
     private void showNotification(String message) {

@@ -18,4 +18,12 @@ public class URLManager {
     public static String getSendNotificationURL() {
         return ApplicationContext.HTTP_HOST + "/sendSinglePush.php";
     }
+
+    public static String getSendLocationURL() {
+        return ApplicationContext.HTTP_HOST + "/sendLocation.php";
+    }
+
+    public static String getUserMessagesURL() {
+        return ApplicationContext.HTTP_HOST + "/GetUserMessages.php";
+    }
 }

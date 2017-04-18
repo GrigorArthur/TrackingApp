@@ -61,31 +61,7 @@ public class TrackGPS extends Service implements LocationListener {
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
-                if (checkNetwork) {
-
-                    try {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("Network", "Network");
-                        if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                        }
-
-                        if (loc != null) {
-                            latitude = loc.getLatitude();
-                            longitude = loc.getLongitude();
-                        }
-                    }
-                    catch(SecurityException e){
-
-                    }
-                }
             }
-            // if GPS Enabled get lat/long using GPS Services
             if (checkGPS) {
                 if (loc == null) {
                     try {

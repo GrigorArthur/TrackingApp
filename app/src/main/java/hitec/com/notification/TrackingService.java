@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,9 +23,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import hitec.com.task.SendLocationTask;
 import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
 import hitec.com.util.MyNotificationManager;
+import hitec.com.util.SharedPrefManager;
 import hitec.com.util.TrackGPS;
 
 public class TrackingService extends Service {
@@ -49,36 +55,55 @@ public class TrackingService extends Service {
 
     private void startService()
     {
-        timer.scheduleAtFixedRate(new mainTask(), 0, 10000);
-    }
-
-    private class mainTask extends TimerTask
-    {
-        public void run()
-        {
-            TrackGPS gps = new TrackGPS(getApplicationContext());
-
-
-            if(gps.canGetLocation()){
-
-
-                double longitude = gps.getLongitude();
-                double latitude = gps .getLatitude();
-
-                Log.v("Location:","Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude));
-                try {
-                    Geocoder gCoder = new Geocoder(getApplicationContext());
-                    latitude = 41.8057;
-                    longitude = 123.4315;
-                    List<Address> addresses = gCoder.getFromLocation(latitude, longitude, 1);
-                    Address info = addresses.get(0);
-                    Log.v("Address", info.getFeatureName());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (SecurityException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        try {
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, mLocationListener);
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, mLocationListener);
+        } catch (SecurityException ex) {
+            ex.printStackTrace();
         }
     }
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            try {
+                Geocoder gCoder = new Geocoder(getApplicationContext());
+                List<Address> addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                String strAdd = strReturnedAddress.toString();
+                String sender = SharedPrefManager.getInstance(getApplicationContext()).getUsername();
+
+                SendLocationTask task = new SendLocationTask();
+                task.execute(sender, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strAdd);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (SecurityException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 }

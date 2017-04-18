@@ -32,6 +32,7 @@ import butterknife.OnClick;
 import hitec.com.ApplicationContext;
 import hitec.com.R;
 import hitec.com.event.RegisterEvent;
+import hitec.com.notification.MyFirebaseInstanceIDService;
 import hitec.com.notification.TrackingService;
 import hitec.com.proxy.BaseProxy;
 import hitec.com.proxy.RegisterProxy;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPrefManager.getInstance(this).saveCustomerID(customerID);
                 SharedPrefManager.getInstance(this).saveFirstRun(false);
                 SharedPrefManager.getInstance(this).saveUserType(usertype);
-                startService(new Intent(MainActivity.this, TrackingService.class));
+
                 startHomeActivity();
             } else {
                 ApplicationContext.showToastMessage(MainActivity.this, getResources().getStringArray(R.array.register_result)[responseVo.error_code]);
