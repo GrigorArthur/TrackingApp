@@ -10,21 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,13 +22,9 @@ import hitec.com.event.RegisterEvent;
 import hitec.com.notification.MyFirebaseInstanceIDService;
 import hitec.com.notification.TrackingService;
 import hitec.com.proxy.BaseProxy;
-import hitec.com.proxy.RegisterProxy;
 import hitec.com.task.RegisterTask;
 import hitec.com.util.SharedPrefManager;
 import hitec.com.util.StringUtil;
-import hitec.com.util.URLManager;
-import hitec.com.vo.BaseResponseVO;
-import hitec.com.vo.RegisterTokenRequestVO;
 import hitec.com.vo.RegisterTokenResponseVO;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.edittext_shake);
+
     }
 
     @Override
@@ -192,4 +176,5 @@ public class MainActivity extends AppCompatActivity {
     private void networkError() {
         ApplicationContext.showToastMessage(MainActivity.this, getResources().getString(R.string.network_error));
     }
+
 }
