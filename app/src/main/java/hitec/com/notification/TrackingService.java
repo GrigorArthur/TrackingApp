@@ -5,20 +5,24 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
 import hitec.com.util.MyNotificationManager;
-
-/**
- * Created by Arthur on 4/17/2017.
- */
+import hitec.com.util.TrackGPS;
 
 public class TrackingService extends Service {
     private Context ctx;
@@ -48,21 +52,33 @@ public class TrackingService extends Service {
         timer.scheduleAtFixedRate(new mainTask(), 0, 10000);
     }
 
-    private void showNotification(String message) {
-        //optionally we can display the json into log
-        MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
-
-        //creating an intent for the notification
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
-        mNotificationManager.showSmallNotification("Notification", message, intent);
-    }
-
     private class mainTask extends TimerTask
     {
         public void run()
         {
-            showNotification("Timer");
+            TrackGPS gps = new TrackGPS(getApplicationContext());
+
+
+            if(gps.canGetLocation()){
+
+
+                double longitude = gps.getLongitude();
+                double latitude = gps .getLatitude();
+
+                Log.v("Location:","Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude));
+                try {
+                    Geocoder gCoder = new Geocoder(getApplicationContext());
+                    latitude = 41.8057;
+                    longitude = 123.4315;
+                    List<Address> addresses = gCoder.getFromLocation(latitude, longitude, 1);
+                    Address info = addresses.get(0);
+                    Log.v("Address", info.getFeatureName());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (SecurityException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 }

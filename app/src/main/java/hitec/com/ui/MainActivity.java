@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        if(!SharedPrefManager.getInstance(this).getFirstRun()) {
+            startHomeActivity();
+        }
+
+        progressDialog = new ProgressDialog(this);
         shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.edittext_shake);
     }
 
@@ -92,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (responseVo != null) {
             if(responseVo.success == BaseProxy.RESPONSE_SUCCESS) {
+                int usertype = responseVo.usertype;
+                SharedPrefManager.getInstance(this).saveUserName(username);
+                SharedPrefManager.getInstance(this).saveCustomerID(customerID);
+                SharedPrefManager.getInstance(this).saveFirstRun(false);
+                SharedPrefManager.getInstance(this).saveUserType(usertype);
+                startService(new Intent(MainActivity.this, TrackingService.class));
                 startHomeActivity();
             } else {
                 ApplicationContext.showToastMessage(MainActivity.this, getResources().getStringArray(R.array.register_result)[responseVo.error_code]);
@@ -150,8 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     //storing token to mysql server
     private void startSignIn() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering Device...");
+        progressDialog.setMessage(getResources().getString(R.string.signing_in));
         progressDialog.show();
 
         String token = SharedPrefManager.getInstance(this).getDeviceToken();
@@ -168,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
 
     //start Home Activity
     private void startHomeActivity() {
-        ApplicationContext.showToastMessage(MainActivity.this, "Success");
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void hideProgressDialog() {

@@ -10,4 +10,8 @@ public class URLManager {
     public static String getRegisterURL() {
         return ApplicationContext.HTTP_HOST + "/RegisterDevice.php";
     }
+
+    public static String getUsersURL() {
+        return ApplicationContext.HTTP_HOST + "/GetRelatedUsers.php";
+    }
 }
