@@ -26,4 +26,8 @@ public class URLManager {
     public static String getUserMessagesURL() {
         return ApplicationContext.HTTP_HOST + "/GetUserMessages.php";
     }
+
+    public static String getLocationsURL() {
+        return ApplicationContext.HTTP_HOST + "/GetLocations.php";
+    }
 }

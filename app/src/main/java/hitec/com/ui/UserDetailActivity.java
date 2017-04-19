@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hitec.com.ApplicationContext;
 import hitec.com.R;
 import hitec.com.adapter.MessageAdapter;
@@ -51,12 +53,15 @@ public class UserDetailActivity extends AppCompatActivity {
     //defining views
     @Bind(R.id.message_list)
     RecyclerView messageList;
+    @Bind(R.id.btn_track_location)
+    Button btnTrackLocation;
 
     private ProgressDialog progressDialog;
     private MessageAdapter adapter;
     private LinearLayoutManager mLinearLayoutManager;
 
     private String username;
+    private int usertype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,13 @@ public class UserDetailActivity extends AppCompatActivity {
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         messageList.setLayoutManager(mLinearLayoutManager);
         messageList.addItemDecoration(new DividerItemDecoration(UserDetailActivity.this, DividerItemDecoration.VERTICAL_LIST));
+
+        usertype = SharedPrefManager.getInstance(this).getUserType();
+        if(usertype == 0) {
+            btnTrackLocation.setVisibility(View.VISIBLE);
+        } else {
+            btnTrackLocation.setVisibility(View.GONE);
+        }
 
         adapter = new MessageAdapter(UserDetailActivity.this);
         messageList.setAdapter(adapter);
@@ -108,6 +120,13 @@ public class UserDetailActivity extends AppCompatActivity {
         super.onPause();
 
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick(R.id.btn_track_location)
+    void onBtnTrackLocation() {
+        Intent intent = new Intent(UserDetailActivity.this, LocationDetailActivity.class);
+        intent.putExtra("username", username);
+        startActivity(intent);
     }
 
     private void getUserMessages() {

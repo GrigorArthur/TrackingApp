@@ -48,6 +48,10 @@
             android:name=".ui.UserDetailActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.LocationDetailActivity"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name=".notification.MyFirebaseInstanceIDService">
             <intent-filter>

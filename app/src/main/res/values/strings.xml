@@ -12,6 +12,8 @@
     <string name="hint_tag">Tag</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="track_location">Track Location</string>
+    <string name="select_date">Select Date</string>
 
     <array name="register_result">
         <item>Success</item>

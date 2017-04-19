@@ -82,6 +82,8 @@ public class TrackingService extends Service {
                 String strAdd = strReturnedAddress.toString();
                 String sender = SharedPrefManager.getInstance(getApplicationContext()).getUsername();
 
+                Log.v("address", strAdd);
+
                 SendLocationTask task = new SendLocationTask();
                 task.execute(sender, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strAdd);
             } catch (IOException ex) {
