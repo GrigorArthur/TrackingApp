@@ -1,9 +1,5 @@
 package hitec.com.model;
 
-/**
- * Created by Don J on 4/19/2017.
- */
-
 public class LocationItem {
     private String address;
     private String time;

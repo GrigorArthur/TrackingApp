@@ -21,10 +21,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-/**
- * Created by newfund on 2017/02/15.
- */
-
 public final class CheckHandshake {
 
     private static final String TAG = CheckHandshake.class.getSimpleName();

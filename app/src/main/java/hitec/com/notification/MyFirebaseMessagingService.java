@@ -11,6 +11,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
 import hitec.com.util.MyNotificationManager;
 
@@ -25,6 +26,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 500 milliseconds
             v.vibrate(500);
+            sendPushNotification(remoteMessage.getData().toString());
         }
 
         /*if (remoteMessage.getNotification() != null) {
@@ -47,26 +49,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //this method will display the notification
     //We are passing the JSONObject that is received from
     //firebase cloud messaging
-    private void sendPushNotification(JSONObject json) {
+    private void sendPushNotification(String contentString) {
         //optionally we can display the json into log
-        Log.e(TAG, "Notification JSON " + json.toString());
+        Log.e(TAG, "Notification JSON " + contentString);
         try {
             //getting the json data
+            JSONObject json = new JSONObject(contentString);
             JSONObject data = json.getJSONObject("data");
 
             //parsing json data
-            String title = data.getString("title");
+            String title = data.getString("sender");
             String message = data.getString("message");
-            String imageUrl = data.getString("image");
+            String imageUrl = "";//data.getString("image");
 
             //creating MyNotificationManager object
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 
             //if there is no image
-            if(imageUrl.equals("null")){
+            if(imageUrl.isEmpty()){
                 //displaying small notification
                 mNotificationManager.showSmallNotification(title, message, intent);
             }else{

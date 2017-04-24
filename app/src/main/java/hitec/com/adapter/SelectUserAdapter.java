@@ -2,10 +2,11 @@ package hitec.com.adapter;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,18 +16,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import hitec.com.R;
 import hitec.com.model.UserItem;
-import hitec.com.ui.HomeActivity;
+import hitec.com.ui.SelectUserActivity;
 import hitec.com.ui.UserDetailActivity;
 import hitec.com.ui.UserListActivity;
 import hitec.com.util.SharedPrefManager;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class SelectUserAdapter extends RecyclerView.Adapter<SelectUserAdapter.UserViewHolder> {
 
-    private UserListActivity parent;
+    private SelectUserActivity parent;
     private int usertype;
     private List<UserItem> items = new ArrayList<>();
 
-    public UserAdapter(UserListActivity parent) {
+    public SelectUserAdapter(SelectUserActivity parent) {
         this.parent = parent;
         this.usertype = SharedPrefManager.getInstance(parent).getUserType();
     }
@@ -34,28 +35,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_users, parent, false);
+                .inflate(R.layout.adapter_select_users, parent, false);
         return new UserViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final UserViewHolder holder, int position) {
-        UserItem item = items.get(position);
+        final UserItem item = items.get(position);
 
         holder.tvUserName.setText(item.getUsername());
 
         holder.view.setTag(position);
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.chkSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                int position = (int)view.getTag();
-                UserItem item = items.get(position);
-                Intent intent = new Intent(parent, UserDetailActivity.class);
-                intent.putExtra("username", item.getUsername());
-                parent.startActivity(intent);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                    item.setSelected(true);
+                else
+                    item.setSelected(false);
             }
         });
-
     }
 
     public UserItem getItem(int pos) {
@@ -74,6 +73,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.items = items;
     }
 
+    public ArrayList<UserItem> getSelectedItems() {
+        ArrayList<UserItem> selectedItems = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++) {
+            if(items.get(i).getSelected())
+                selectedItems.add(items.get(i));
+        }
+
+        return selectedItems;
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -84,6 +93,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         @Bind(R.id.tv_username)
         TextView tvUserName;
+        @Bind(R.id.btn_check)
+        CheckBox chkSelect;
 
         public UserViewHolder(View view) {
             super(view);

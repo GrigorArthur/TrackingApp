@@ -8,10 +8,6 @@ import hitec.com.event.RegisterEvent;
 import hitec.com.proxy.RegisterProxy;
 import hitec.com.vo.RegisterTokenResponseVO;
 
-/**
- * Created by Arthur on 4/17/2017.
- */
-
 public class RegisterTask extends AsyncTask<String, Void, RegisterTokenResponseVO> {
 
     private String username;

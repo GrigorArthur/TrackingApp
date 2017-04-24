@@ -23,12 +23,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import hitec.com.event.GetRecentStatusEvent;
+import hitec.com.proxy.BaseProxy;
 import hitec.com.task.SendLocationTask;
 import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
 import hitec.com.util.MyNotificationManager;
 import hitec.com.util.SharedPrefManager;
 import hitec.com.util.TrackGPS;
+import hitec.com.vo.GetRecentStatusResponseVO;
 
 public class TrackingService extends Service {
     private Context ctx;
@@ -53,6 +56,17 @@ public class TrackingService extends Service {
         startService();
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe
+    public void onGetUserEvent(GetRecentStatusEvent event) {
+
+    }
+
     private void startService()
     {
         try {
@@ -61,6 +75,7 @@ public class TrackingService extends Service {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, mLocationListener);
             if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, mLocationListener);
+            EventBus.getDefault().register(this);
         } catch (SecurityException ex) {
             ex.printStackTrace();
         }
@@ -72,7 +87,8 @@ public class TrackingService extends Service {
             //your code here
             try {
                 Geocoder gCoder = new Geocoder(getApplicationContext());
-                List<Address> addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                List<Address> addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                List<Address> addresses = gCoder.getFromLocation(52.3702, 4.8952, 1);
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
@@ -85,7 +101,8 @@ public class TrackingService extends Service {
                 Log.v("address", strAdd);
 
                 SendLocationTask task = new SendLocationTask();
-                task.execute(sender, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strAdd);
+//                task.execute(sender, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strAdd);
+                task.execute(sender, String.valueOf(52.3702), String.valueOf(4.8952), strAdd);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (SecurityException ex) {

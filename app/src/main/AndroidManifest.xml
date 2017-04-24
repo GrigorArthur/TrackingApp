@@ -49,7 +49,19 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.UserListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.LocationDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.PostStatusActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.SelectUserActivity"
             android:screenOrientation="portrait"/>
 
         <service

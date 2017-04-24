@@ -1,21 +1,13 @@
 package hitec.com.ui;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,9 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,20 +23,12 @@ import butterknife.OnClick;
 import hitec.com.ApplicationContext;
 import hitec.com.R;
 import hitec.com.adapter.MessageAdapter;
-import hitec.com.adapter.UserAdapter;
 import hitec.com.event.GetUserMessagesEvent;
-import hitec.com.event.GetUsersEvent;
 import hitec.com.model.MessageItem;
-import hitec.com.model.UserItem;
-import hitec.com.notification.TrackingService;
 import hitec.com.proxy.BaseProxy;
 import hitec.com.task.GetUserMessagesTask;
-import hitec.com.task.GetUsersTask;
-import hitec.com.task.SendLocationTask;
-import hitec.com.task.SendNotificationTask;
 import hitec.com.util.SharedPrefManager;
 import hitec.com.vo.GetUserMessagesResponseVO;
-import hitec.com.vo.GetUsersResponseVO;
 
 public class UserDetailActivity extends AppCompatActivity {
 

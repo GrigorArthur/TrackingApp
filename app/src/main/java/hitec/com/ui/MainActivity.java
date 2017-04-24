@@ -1,10 +1,14 @@
 package hitec.com.ui;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.test.mock.MockPackageManager;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -45,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     private String customerID;
     private String password;
 
+    private static final int REQUEST_CODE_PERMISSION = 2;
+
+    private String[] mPermission = {Manifest.permission.ACCESS_FINE_LOCATION};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.edittext_shake);
+
+        if (ActivityCompat.checkSelfPermission(this, mPermission[0])
+                != MockPackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    mPermission, REQUEST_CODE_PERMISSION);
+        }
 
     }
 
@@ -175,6 +190,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void networkError() {
         ApplicationContext.showToastMessage(MainActivity.this, getResources().getString(R.string.network_error));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("Req Code", "" + requestCode);
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults.length == 1 &&
+                    grantResults[0] == MockPackageManager.PERMISSION_GRANTED) {
+            }
+        }
+
     }
 
 }

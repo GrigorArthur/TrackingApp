@@ -4,10 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-/**
- * Created by Arthur on 4/17/2017.
- */
-
 public class AppApplication extends Application{
     private static AppApplication instance;
 

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
 
+import hitec.com.event.SendLocationEvent;
 import hitec.com.event.SendNotificationEvent;
 import hitec.com.proxy.SendLocationProxy;
 import hitec.com.proxy.SendNotificationProxy;
@@ -43,5 +44,6 @@ public class SendLocationTask extends AsyncTask<String, Void, SendLocationRespon
 
     @Override
     protected void onPostExecute(SendLocationResponseVO responseVo) {
+//        EventBus.getDefault().post(new SendLocationEvent(responseVo));
     }
 }

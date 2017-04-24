@@ -14,6 +14,14 @@
     <string name="cancel">Cancel</string>
     <string name="track_location">Track Location</string>
     <string name="select_date">Select Date</string>
+    <string name="view_users">Users</string>
+    <string name="view_my_messages">My Messages</string>
+    <string name="post_status">Post Status</string>
+    <string name="hint_users">Users</string>
+    <string name="hint_message">Message</string>
+    <string name="post">Post</string>
+    <string name="status_posted">Status Successfully Posted.</string>
+    <string name="posting">Posting...</string>
 
     <array name="register_result">
         <item>Success</item>
