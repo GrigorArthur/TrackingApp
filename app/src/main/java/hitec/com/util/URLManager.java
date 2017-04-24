@@ -30,4 +30,8 @@ public class URLManager {
     public static String getRecentStatusURL() {
         return ApplicationContext.HTTP_HOST + "/GetRecentStatus.php";
     }
+
+    public static String getSendAdminNotificationURL() {
+        return ApplicationContext.HTTP_HOST + "/SendPushToAdmin.php";
+    }
 }

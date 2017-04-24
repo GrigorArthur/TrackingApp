@@ -3,55 +3,33 @@ package hitec.com.ui;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 import hitec.com.ApplicationContext;
 import hitec.com.R;
-import hitec.com.adapter.UserAdapter;
-import hitec.com.event.GetUsersEvent;
+import hitec.com.event.SendAdminNotificationEvent;
 import hitec.com.event.SendNotificationEvent;
-import hitec.com.model.UserItem;
-import hitec.com.notification.TrackingService;
-import hitec.com.proxy.BaseProxy;
+import hitec.com.proxy.SendAdminNotificationProxy;
 import hitec.com.proxy.SendNotificationProxy;
-import hitec.com.task.GetUsersTask;
-import hitec.com.task.SendLocationTask;
+import hitec.com.task.SendAdminNotificationTask;
 import hitec.com.task.SendNotificationTask;
 import hitec.com.util.SharedPrefManager;
 import hitec.com.util.StringUtil;
-import hitec.com.vo.GetUsersResponseVO;
+import hitec.com.vo.SendAdminNotificationResponseVO;
 import hitec.com.vo.SendNotificationResponseVO;
 
 public class PostStatusActivity extends AppCompatActivity {
@@ -115,7 +93,18 @@ public class PostStatusActivity extends AppCompatActivity {
         hideProgressDialog();
         SendNotificationResponseVO responseVO = event.getResponse();
         if(responseVO != null && responseVO.success == SendNotificationProxy.RESPONSE_SUCCESS) {
+            postSuccess();
+        } else {
+            networkError();
+        }
+    }
 
+    @Subscribe
+    public void onSendAdminNotificationEvent(SendAdminNotificationEvent event) {
+        hideProgressDialog();
+        SendAdminNotificationResponseVO responseVO = event.getResponse();
+        if(responseVO != null && responseVO.success == SendAdminNotificationProxy.RESPONSE_SUCCESS) {
+            postSuccess();
         } else {
             networkError();
         }
@@ -165,6 +154,12 @@ public class PostStatusActivity extends AppCompatActivity {
         progressDialog.show();
         if(selectedUsers.isEmpty()) {
             //Send to Admins.
+            String sender = SharedPrefManager.getInstance(PostStatusActivity.this).getUsername();
+            String customerID = SharedPrefManager.getInstance(PostStatusActivity.this).getCustomerID();
+            String message = edtMessage.getText().toString();
+
+            SendAdminNotificationTask task = new SendAdminNotificationTask();
+            task.execute(sender, customerID, message);
         } else {
             //Send to Users
             String sender = SharedPrefManager.getInstance(PostStatusActivity.this).getUsername();
@@ -174,7 +169,7 @@ public class PostStatusActivity extends AppCompatActivity {
         }
     }
 
-    private void sendSuccess() {
+    private void postSuccess() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PostStatusActivity.this);
         builder.setTitle(getString(R.string.app_name));
         builder.setMessage(getString(R.string.status_posted));
