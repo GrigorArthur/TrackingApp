@@ -67,6 +67,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //creating an intent for the notification
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             //if there is no image
             if(imageUrl.isEmpty()){
