@@ -8,5 +8,4 @@ public class SendLocationRequestVO extends BaseRequestVO{
     public String sender;
     public String latitude;
     public String longitude;
-    public String address;
 }

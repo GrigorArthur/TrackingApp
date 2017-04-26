@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onGetUserEvent(GetRecentStatusEvent event) {
+    public void onGetRecentStatusEvent(GetRecentStatusEvent event) {
         hideProgressDialog();
         GetRecentStatusResponseVO responseVo = event.getResponse();
         if (responseVo != null) {
@@ -113,6 +113,14 @@ public class HomeActivity extends AppCompatActivity {
     @OnClick(R.id.btn_view_users)
     void onBtnClickViewUsers() {
         Intent intent = new Intent(HomeActivity.this, UserListActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_view_my_messages)
+    void onBtnClickMyMessages() {
+        String username = SharedPrefManager.getInstance(HomeActivity.this).getUsername();
+        Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 

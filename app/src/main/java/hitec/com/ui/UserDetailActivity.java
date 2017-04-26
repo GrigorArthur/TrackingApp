@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -51,6 +52,7 @@ public class UserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail);
 
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         username = getIntent().getStringExtra("username");
 
@@ -67,7 +69,7 @@ public class UserDetailActivity extends AppCompatActivity {
             btnTrackLocation.setVisibility(View.GONE);
         }
 
-        adapter = new MessageAdapter(UserDetailActivity.this);
+        adapter = new MessageAdapter(UserDetailActivity.this, username);
         messageList.setAdapter(adapter);
 
         progressDialog = new ProgressDialog(UserDetailActivity.this);
@@ -104,6 +106,15 @@ public class UserDetailActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @OnClick(R.id.btn_track_location)
     void onBtnTrackLocation() {
         Intent intent = new Intent(UserDetailActivity.this, LocationDetailActivity.class);
@@ -126,12 +137,14 @@ public class UserDetailActivity extends AppCompatActivity {
             int count = jsonArray.length();
             for(int i = 0; i < count; i++) {
                 JSONObject json = (JSONObject) jsonArray.get(i);
-                String username = json.getString("to_user");
+                String fromUser = json.getString("from_user");
+                String toUser = json.getString("to_user");
                 String message = json.getString("message");
                 String time = json.getString("time");
 
                 MessageItem item = new MessageItem();
-                item.setUserName(username);
+                item.setFromUser(fromUser);
+                item.setToUser(toUser);
                 item.setMessage(message);
                 item.setTime(time);
 

@@ -24,14 +24,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hitec.com.event.GetRecentStatusEvent;
+import hitec.com.event.SendLocationEvent;
 import hitec.com.proxy.BaseProxy;
+import hitec.com.proxy.SendLocationProxy;
 import hitec.com.task.SendLocationTask;
 import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
+import hitec.com.util.DateUtil;
 import hitec.com.util.MyNotificationManager;
 import hitec.com.util.SharedPrefManager;
 import hitec.com.util.TrackGPS;
 import hitec.com.vo.GetRecentStatusResponseVO;
+import hitec.com.vo.SendLocationResponseVO;
 
 public class TrackingService extends Service {
     private Context ctx;
@@ -63,8 +67,15 @@ public class TrackingService extends Service {
     }
 
     @Subscribe
-    public void onGetUserEvent(GetRecentStatusEvent event) {
-
+    public void onSendLocationEvent(SendLocationEvent event) {
+        SendLocationResponseVO responseVO = event.getResponse();
+        if(responseVO != null && responseVO.success == SendLocationProxy.RESPONSE_SUCCESS) {
+            Log.v("SendLocation", "Success");
+            SharedPrefManager.getInstance(ctx).saveSentFlag(true);
+        } else {
+            Log.v("SendLocation", "Failed");
+            SharedPrefManager.getInstance(ctx).saveSentFlag(false);
+        }
     }
 
     private void startService()
@@ -72,13 +83,20 @@ public class TrackingService extends Service {
         try {
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, mLocationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 0, mLocationListener);
             if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, mLocationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 0, mLocationListener);
             EventBus.getDefault().register(this);
         } catch (SecurityException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void sendLocation(double latitude, double longitude) {
+        String sender = SharedPrefManager.getInstance(getApplicationContext()).getUsername();
+
+        SendLocationTask task = new SendLocationTask();
+        task.execute(sender, String.valueOf(52.361471), String.valueOf(4.877091));
     }
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -86,25 +104,16 @@ public class TrackingService extends Service {
         public void onLocationChanged(final Location location) {
             //your code here
             try {
-                Geocoder gCoder = new Geocoder(getApplicationContext());
-//                List<Address> addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                List<Address> addresses = gCoder.getFromLocation(52.3702, 4.8952, 1);
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
+                Log.v("Latitude", String.valueOf(location.getLatitude()));
+                Log.v("Longitude", String.valueOf(location.getLongitude()));
 
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                String strAdd = strReturnedAddress.toString();
-                String sender = SharedPrefManager.getInstance(getApplicationContext()).getUsername();
+                SharedPrefManager.getInstance(ctx).saveLatitude(String.valueOf(location.getLatitude()));
+                SharedPrefManager.getInstance(ctx).saveLongitude(String.valueOf(location.getLongitude()));
+                SharedPrefManager.getInstance(ctx).saveTrackingTime(DateUtil.getCurDateTime());
+                SharedPrefManager.getInstance(ctx).saveSentFlag(false);
 
-                Log.v("address", strAdd);
+                sendLocation(location.getLatitude(), location.getLongitude());
 
-                SendLocationTask task = new SendLocationTask();
-//                task.execute(sender, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), strAdd);
-                task.execute(sender, String.valueOf(52.3702), String.valueOf(4.8952), strAdd);
-            } catch (IOException ex) {
-                ex.printStackTrace();
             } catch (SecurityException ex) {
                 ex.printStackTrace();
             }

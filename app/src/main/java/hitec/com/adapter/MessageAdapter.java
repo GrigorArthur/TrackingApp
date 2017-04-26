@@ -21,12 +21,12 @@ import hitec.com.util.SharedPrefManager;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private UserDetailActivity parent;
-    private int usertype;
     private List<MessageItem> items = new ArrayList<>();
+    private String username;
 
-    public MessageAdapter(UserDetailActivity parent) {
+    public MessageAdapter(UserDetailActivity parent, String username) {
         this.parent = parent;
-        this.usertype = SharedPrefManager.getInstance(parent).getUserType();
+        this.username = username;
     }
 
     @Override
@@ -40,7 +40,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(final MessageViewHolder holder, int position) {
         MessageItem item = items.get(position);
 
-        holder.tvUserName.setText(item.getUsername());
+        if(username.equals(item.getFromUser())) {
+            holder.tvUserName.setText("To " + item.getToUser());
+        }
+        else {
+            holder.tvUserName.setText("From " + item.getFromUser());
+        }
         holder.tvMessage.setText(item.getMessage());
         holder.tvTime.setText(item.getTIme());
     }
