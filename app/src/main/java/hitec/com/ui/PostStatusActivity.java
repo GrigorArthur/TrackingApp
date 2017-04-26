@@ -179,6 +179,7 @@ public class PostStatusActivity extends AppCompatActivity {
                 finish();
             }
         });
+        builder.show();
     }
 
     private void networkError() {

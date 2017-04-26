@@ -11,6 +11,12 @@ public class SharedPrefManager {
     private static final String TAG_CUSTOMER_ID = "tagcustomerid";
     private static final String TAG_USER_TYPE = "tagusertype";
 
+    private static final String TAG_LATITUDE = "taglatitude";
+    private static final String TAG_LONGITUDE = "taglongitude";
+    private static final String TAG_ADDRESS = "tagaddress";
+    private static final String TAG_TRACKING_TIME = "tagtime";
+    private static final String TAG_SENT = "tagsent";
+
     private static SharedPrefManager mInstance;
     private static Context mCtx;
 
@@ -90,5 +96,70 @@ public class SharedPrefManager {
     public int getUserType() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return  sharedPreferences.getInt(TAG_USER_TYPE, 1);
+    }
+
+    public boolean saveLatitude(String latitude) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TAG_LATITUDE, latitude);
+        editor.apply();
+        return true;
+    }
+
+    public String getLatitude() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getString(TAG_LATITUDE, null);
+    }
+
+    public boolean saveLongitude(String longitude) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TAG_LONGITUDE, longitude);
+        editor.apply();
+        return true;
+    }
+
+    public String getLongitude() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getString(TAG_LONGITUDE, null);
+    }
+
+    public boolean saveAddress(String address) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TAG_ADDRESS, address);
+        editor.apply();
+        return true;
+    }
+
+    public String getAddress() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getString(TAG_ADDRESS, null);
+    }
+
+    public boolean saveTrackingTime(String time) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TAG_TRACKING_TIME, time);
+        editor.apply();
+        return true;
+    }
+
+    public String getTrackingTime() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getString(TAG_TRACKING_TIME, null);
+    }
+
+    public boolean saveSentFlag(boolean sent) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(TAG_SENT, sent);
+        editor.apply();
+        return true;
+    }
+
+    public boolean getSentFlag() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getBoolean(TAG_SENT, false);
     }
 }

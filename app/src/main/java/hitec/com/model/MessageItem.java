@@ -1,22 +1,32 @@
 package hitec.com.model;
 
 public class MessageItem {
-    private String username;
+    private String fromUser;
+    private String toUser;
     private String message;
     private String time;
 
     public MessageItem() {
-        username = "";
+        fromUser = "";
+        toUser = "";
         message = "";
         time = "";
     }
 
-    public void setUserName(String value) {
-        this.username = value;
+    public void setFromUser(String value) {
+        this.fromUser = value;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setToUser(String value) {
+        this.toUser = value;
+    }
+
+    public String getToUser() {
+        return toUser;
     }
 
     public void setMessage(String value) {
