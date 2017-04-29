@@ -14,17 +14,18 @@ import okhttp3.RequestBody;
 
 public class SendAdminNotificationProxy extends BaseProxy {
 
-    public SendAdminNotificationResponseVO run(String sender, String customerID, String message) throws IOException {
+    public SendAdminNotificationResponseVO run(String sender, String customerID, String message, String imageFile) throws IOException {
         SendAdminNotificationRequestVO requestVo = new SendAdminNotificationRequestVO();
         requestVo.sender = sender;
         requestVo.customerID = customerID;
         requestVo.message = message;
+        requestVo.imageFile = imageFile;
 
         FormBody.Builder formBuilder = new FormBody.Builder();
         formBuilder.add("sender", requestVo.sender);
         formBuilder.add("customer_id", requestVo.customerID);;
         formBuilder.add("message", requestVo.message);
-
+        formBuilder.add("image", requestVo.imageFile);
 
         RequestBody formBody = formBuilder.build();
 

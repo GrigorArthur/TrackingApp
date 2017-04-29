@@ -33,6 +33,19 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/btn_add_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonDefault"
+        android:text="Add Image"/>
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
         android:layout_centerVertical="true"
         android:text="@string/post"
         android:id="@+id/btn_post"

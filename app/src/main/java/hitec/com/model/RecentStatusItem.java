@@ -3,11 +3,13 @@ package hitec.com.model;
 public class RecentStatusItem {
     private String username;
     private String message;
+    private String imageURL;
     private String time;
 
     public RecentStatusItem() {
         username = "";
         message = "";
+        imageURL = "";
         time = "";
     }
 
@@ -25,6 +27,14 @@ public class RecentStatusItem {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setImageURL(String value) {
+        this.imageURL = value;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public void setTime(String value) {

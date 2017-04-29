@@ -4,12 +4,14 @@ public class MessageItem {
     private String fromUser;
     private String toUser;
     private String message;
+    private String imageURL;
     private String time;
 
     public MessageItem() {
         fromUser = "";
         toUser = "";
         message = "";
+        imageURL = "";
         time = "";
     }
 
@@ -35,6 +37,14 @@ public class MessageItem {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setImageURL(String value) {
+        this.imageURL = value;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public void setTime(String value) {

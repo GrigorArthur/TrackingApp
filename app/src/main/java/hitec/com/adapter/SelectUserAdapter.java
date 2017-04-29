@@ -70,6 +70,7 @@ public class SelectUserAdapter extends RecyclerView.Adapter<SelectUserAdapter.Us
     }
 
     public void addItems(ArrayList<UserItem> items) {
+        this.items.clear();
         this.items = items;
     }
 

@@ -83,9 +83,9 @@ public class TrackingService extends Service {
         try {
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, mLocationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 0, mLocationListener);
             if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, mLocationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 0, mLocationListener);
             EventBus.getDefault().register(this);
         } catch (SecurityException ex) {
             ex.printStackTrace();
@@ -96,7 +96,7 @@ public class TrackingService extends Service {
         String sender = SharedPrefManager.getInstance(getApplicationContext()).getUsername();
 
         SendLocationTask task = new SendLocationTask();
-        task.execute(sender, String.valueOf(52.361471), String.valueOf(4.877091));
+        task.execute(sender, String.valueOf(latitude), String.valueOf(longitude));
     }
 
     private final LocationListener mLocationListener = new LocationListener() {

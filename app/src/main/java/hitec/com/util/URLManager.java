@@ -34,4 +34,12 @@ public class URLManager {
     public static String getSendAdminNotificationURL() {
         return ApplicationContext.HTTP_HOST + "/SendPushToAdmin.php";
     }
+
+    public static String getUploadImageURL() {
+        return ApplicationContext.HTTP_HOST + "/UploadImage.php";
+    }
+
+    public static String getImageURL() {
+        return ApplicationContext.HTTP_HOST + "/Images/";
+    }
 }

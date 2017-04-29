@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import hitec.com.model.MessageItem;
 import hitec.com.model.UserItem;
 import hitec.com.ui.UserDetailActivity;
 import hitec.com.util.SharedPrefManager;
+import hitec.com.util.URLManager;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
@@ -48,6 +52,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
         holder.tvMessage.setText(item.getMessage());
         holder.tvTime.setText(item.getTIme());
+
+        if(!item.getImageURL().isEmpty() && item.getImageURL() != null) {
+            ImageLoader.getInstance().displayImage(URLManager.getImageURL() + item.getImageURL(), holder.ivImage);
+        }
     }
 
     public MessageItem getItem(int pos) {
@@ -63,6 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public void addItems(ArrayList<MessageItem> items) {
+        this.items.clear();
         this.items = items;
     }
 
@@ -80,6 +89,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         TextView tvMessage;
         @Bind(R.id.tv_time)
         TextView tvTime;
+        @Bind(R.id.iv_image)
+        ImageView ivImage;
 
         public MessageViewHolder(View view) {
             super(view);

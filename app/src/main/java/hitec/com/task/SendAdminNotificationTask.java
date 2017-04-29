@@ -16,6 +16,7 @@ public class SendAdminNotificationTask extends AsyncTask<String, Void, SendAdmin
     private String sender;
     private String customerID;
     private String message;
+    private String imageFileName;
 
     public SendAdminNotificationTask() {
     }
@@ -31,8 +32,9 @@ public class SendAdminNotificationTask extends AsyncTask<String, Void, SendAdmin
         sender = params[0];
         customerID = params[1];
         message = params[2];
+        imageFileName = params[3];
         try {
-            final SendAdminNotificationResponseVO responseVo = simpleProxy.run(sender, customerID, message);
+            final SendAdminNotificationResponseVO responseVo = simpleProxy.run(sender, customerID, message, imageFileName);
 
             return responseVo;
         } catch (Exception e) {

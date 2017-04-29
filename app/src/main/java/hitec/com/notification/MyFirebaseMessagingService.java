@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import hitec.com.ui.HomeActivity;
 import hitec.com.ui.MainActivity;
 import hitec.com.util.MyNotificationManager;
+import hitec.com.util.URLManager;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -60,7 +61,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //parsing json data
             String title = data.getString("sender");
             String message = data.getString("message");
-            String imageUrl = "";//data.getString("image");
+            String imageUrl = data.getString("image");
+
+            Log.v("Image", imageUrl);
 
             //creating MyNotificationManager object
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
@@ -77,7 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }else{
                 //if there is an image
                 //displaying a big notification
-                mNotificationManager.showBigNotification(title, message, imageUrl, intent);
+                mNotificationManager.showBigNotification(title, message, URLManager.getImageURL() + imageUrl, intent);
             }
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());

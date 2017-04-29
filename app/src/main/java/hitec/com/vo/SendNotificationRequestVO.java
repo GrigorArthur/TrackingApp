@@ -8,4 +8,5 @@ public class SendNotificationRequestVO extends BaseRequestVO{
     public String sender;
     public String receiver;
     public String message;
+    public String imageFile;
 }

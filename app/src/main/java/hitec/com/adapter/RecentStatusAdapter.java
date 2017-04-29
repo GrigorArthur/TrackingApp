@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import hitec.com.model.RecentStatusItem;
 import hitec.com.ui.HomeActivity;
 import hitec.com.ui.UserDetailActivity;
 import hitec.com.util.SharedPrefManager;
+import hitec.com.util.URLManager;
 
 public class RecentStatusAdapter extends RecyclerView.Adapter<RecentStatusAdapter.RecentStatusViewHolder> {
 
@@ -42,6 +46,10 @@ public class RecentStatusAdapter extends RecyclerView.Adapter<RecentStatusAdapte
         holder.tvUserName.setText(item.getUsername());
         holder.tvMessage.setText(item.getMessage());
         holder.tvTime.setText(item.getTIme());
+
+        if(!item.getImageURL().isEmpty() && item.getImageURL() != null) {
+            ImageLoader.getInstance().displayImage(URLManager.getImageURL() + item.getImageURL(), holder.ivImage);
+        }
     }
 
     public RecentStatusItem getItem(int pos) {
@@ -57,6 +65,7 @@ public class RecentStatusAdapter extends RecyclerView.Adapter<RecentStatusAdapte
     }
 
     public void addItems(ArrayList<RecentStatusItem> items) {
+        this.items.clear();
         this.items = items;
     }
 
@@ -74,6 +83,8 @@ public class RecentStatusAdapter extends RecyclerView.Adapter<RecentStatusAdapte
         TextView tvMessage;
         @Bind(R.id.tv_time)
         TextView tvTime;
+        @Bind(R.id.iv_image)
+        ImageView ivImage;
 
         public RecentStatusViewHolder(View view) {
             super(view);

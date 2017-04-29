@@ -140,12 +140,14 @@ public class UserDetailActivity extends AppCompatActivity {
                 String fromUser = json.getString("from_user");
                 String toUser = json.getString("to_user");
                 String message = json.getString("message");
+                String imageURL = json.getString("image");
                 String time = json.getString("time");
 
                 MessageItem item = new MessageItem();
                 item.setFromUser(fromUser);
                 item.setToUser(toUser);
                 item.setMessage(message);
+                item.setImageURL(imageURL);
                 item.setTime(time);
 
                 items.add(item);

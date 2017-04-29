@@ -127,6 +127,7 @@ public class HomeActivity extends AppCompatActivity {
     @OnClick(R.id.btn_post_status)
     void onBtnClickPostStatus() {
         Intent intent = new Intent(HomeActivity.this, PostStatusActivity.class);
+        PostStatusActivity.mphoto = null;
         startActivity(intent);
     }
 
@@ -158,6 +159,7 @@ public class HomeActivity extends AppCompatActivity {
                     item.setUserName("From " + fromUser);
                 }
                 item.setMessage(json.getString("message"));
+                item.setImageURL(json.getString("image"));
                 item.setTime(json.getString("time"));
                 items.add(item);
             }

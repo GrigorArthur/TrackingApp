@@ -71,6 +71,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public void addItems(ArrayList<UserItem> items) {
+        this.items.clear();
         this.items = items;
     }
 

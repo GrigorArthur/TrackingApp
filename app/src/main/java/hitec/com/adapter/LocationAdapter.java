@@ -57,6 +57,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     public void addItems(ArrayList<LocationItem> items) {
+        this.items.clear();
         this.items = items;
     }
 

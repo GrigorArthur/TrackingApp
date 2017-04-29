@@ -14,6 +14,7 @@ public class SendNotificationTask extends AsyncTask<String, Void, SendNotificati
     private String sender;
     private String receiver;
     private String message;
+    private String imageFile;
 
     public SendNotificationTask() {
     }
@@ -29,8 +30,9 @@ public class SendNotificationTask extends AsyncTask<String, Void, SendNotificati
         sender = params[0];
         receiver = params[1];
         message = params[2];
+        imageFile = params[3];
         try {
-            final SendNotificationResponseVO responseVo = simpleProxy.run(sender, receiver, message);
+            final SendNotificationResponseVO responseVo = simpleProxy.run(sender, receiver, message, imageFile);
 
             return responseVo;
         } catch (Exception e) {
